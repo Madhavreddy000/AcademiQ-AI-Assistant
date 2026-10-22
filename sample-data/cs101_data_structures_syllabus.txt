@@ -1,0 +1,42 @@
+COURSE CURRICULUM & DETAILED SYLLABUS
+Course Title: Data Structures and Algorithms
+Course Code: CS201 / CS101
+Department: Computer Science and Engineering
+Credits: 4 (L: 3, T: 1, P: 2)
+Prerequisites: CS100 Introduction to Programming in C/C++
+
+1. COURSE OVERVIEW & OBJECTIVES:
+This core foundational course introduces fundamental abstract data types, recursive algorithms, asymptotic complexity analysis (Big-O, Omega, Theta), and problem-solving techniques using non-linear and graph data structures.
+
+2. DETAILED UNIT BREAKDOWN:
+Unit 1: Linear Abstract Data Types and Complexity Analysis (10 Hours)
+- Time and Space complexity; Asymptotic notations; Master theorem.
+- Stacks: Array and linked representations; applications to infix-to-postfix conversion and expression evaluation.
+- Queues: Simple queue, circular queue, double-ended queue (deque), and priority queues using binary heaps.
+
+Unit 2: Non-Linear Hierarchical Data Structures (12 Hours)
+- Binary Trees: Representation, recursive and iterative traversals (Inorder, Preorder, Postorder).
+- Binary Search Trees (BST): Insertion, deletion, search, and balancing considerations.
+- Self-Balancing Trees: AVL tree rotations and height balance property; introduction to Red-Black and 2-3 trees.
+- Heaps: Min-heap, Max-heap, and Heap sort in-place implementation.
+
+Unit 3: Graph Structures and Advanced Algorithms (14 Hours)
+- Graph Representations: Adjacency matrix, adjacency list, and incidence list.
+- Graph Traversal Algorithms: Breadth-First Search (BFS) and Depth-First Search (DFS) with completeness and complexity analysis.
+- Minimum Spanning Trees (MST): Prim's greedy algorithm and Kruskal's algorithm with Disjoint Set Union (DSU) / Union-Find data structure.
+- Shortest Paths: Dijkstra's single source shortest path algorithm; Bellman-Ford algorithm for negative edge weights; Floyd-Warshall all-pairs shortest paths.
+
+Unit 4: Algorithm Design Strategies and Advanced Searching (12 Hours)
+- Dynamic Programming: 0/1 Knapsack, Longest Common Subsequence (LCS), and Matrix Chain Multiplication.
+- Greedy Algorithms: Huffman coding and Activity selection.
+- Hashing: Hash functions, collision resolution strategies (linear probing, quadratic probing, separate chaining).
+
+3. SCHEME OF CONTINUOUS INTERNAL EVALUATION (CIE):
+- Mid-Term Written Examination 1 (Units 1 & 2): 15 Marks
+- Mid-Term Written Examination 2 (Units 3 & 4): 15 Marks
+- Laboratory Assignments, Weekly Code Submissions & Viva: 10 Marks
+Total Internal Assessment: 40 Marks (Minimum passing threshold: 16 Marks)
+
+4. END-SEMESTER EXAMINATION (ESE):
+- Comprehensive Written Examination: 60 Marks (Duration: 3 Hours)
+- Passing Criteria: Minimum 40% in ESE (24 marks) and 40% in overall aggregate (40 marks out of 100).
