@@ -27,6 +27,7 @@ public class AuthResponse {
         private Long departmentId;
         private Integer currentSemester;
         private String studentIdNumber;
+        private String stream;
 
         public UserDto(User user) {
             this.id = user.getId();
@@ -36,6 +37,7 @@ public class AuthResponse {
             this.departmentId = user.getDepartmentId();
             this.currentSemester = user.getCurrentSemester();
             this.studentIdNumber = user.getStudentIdNumber();
+            this.stream = user.getStream();
         }
 
         public Long getId() { return id; }
@@ -45,5 +47,6 @@ public class AuthResponse {
         public Long getDepartmentId() { return departmentId; }
         public Integer getCurrentSemester() { return currentSemester; }
         public String getStudentIdNumber() { return studentIdNumber; }
+        public String getStream() { return stream; }
     }
 }

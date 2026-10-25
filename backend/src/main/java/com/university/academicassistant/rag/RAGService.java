@@ -129,7 +129,7 @@ public class RAGService {
     private String generateStructuredAcademicAnswer(String query, List<Document> context) {
         String q = query.toLowerCase();
 
-        if (q.includes("attendance") || q.includes("absent") || q.includes("shortage")) {
+        if (q.contains("attendance") || q.contains("absent") || q.contains("shortage")) {
             return """
                 ### Official Attendance Requirements & Examination Eligibility
 
@@ -145,7 +145,7 @@ public class RAGService {
                 """;
         }
 
-        if (q.includes("grade") || q.includes("gpa") || q.includes("grading")) {
+        if (q.contains("grade") || q.contains("gpa") || q.contains("grading")) {
             return """
                 ### Official 10-Point Grading System & GPA Calculation
 
@@ -167,7 +167,7 @@ public class RAGService {
                 """;
         }
 
-        if (q.includes("data structure") || q.includes("cs201") || q.includes("syllabus")) {
+        if (q.contains("data structure") || q.contains("cs201") || q.contains("syllabus")) {
             return """
                 ### Course Syllabus: Data Structures & Algorithms (CS201)
 

@@ -1,4 +1,4 @@
-export type UserRole = 'STUDENT' | 'FACULTY';
+export type UserRole = 'STUDENT' | 'FACULTY' | 'ADMIN';
 
 export type AIProvider = 'gemini' | 'openai' | 'groq' | 'local-rag';
 
@@ -50,6 +50,9 @@ export function getYearLabel(year: number): string {
   }
 }
 
+export const STREAMS = ['B.Tech', 'M.Tech', 'B.Sc', 'BCA', 'MCA', 'BBA', 'MBA', 'Diploma', 'Ph.D'] as const;
+export type StreamName = typeof STREAMS[number];
+
 export interface User {
   id: number;
   email: string;
@@ -61,6 +64,7 @@ export interface User {
   currentSemester?: number;
   academicYearNumber?: number;
   studentIdNumber?: string;
+  stream?: string;
   avatarUrl?: string;
   token?: string;
 }

@@ -5,7 +5,6 @@ import { useTheme } from '../../context/ThemeContext';
 import { 
   Sun, 
   Moon, 
-  GraduationCap, 
   UserCircle, 
   LogOut, 
   Sparkles, 
@@ -13,13 +12,14 @@ import {
   LayoutDashboard,
   Upload,
   Cpu,
-  ChevronDown
+  ChevronDown,
+  GraduationCap,
+  Briefcase
 } from 'lucide-react';
-import { UserRole } from '../../types';
 import { AIModelModal } from './AIModelModal';
 
 export const Navbar: React.FC = () => {
-  const { user, logout, switchRole } = useAuth();
+  const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -27,25 +27,30 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-navy-950/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-navy-950/90 backdrop-blur-md">
         <div className="flex h-16 items-center justify-between px-4 sm:px-6">
-          {/* Brand / Logo */}
+          
+          {/* Brand with GGU Logo */}
           <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-academic-600 via-academic-500 to-indigo-500 flex items-center justify-center text-white shadow-glow group-hover:scale-105 transition-transform duration-200">
-                <GraduationCap className="h-6 w-6" />
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="bg-white dark:bg-navy-900 rounded-xl p-1.5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform">
+                <img 
+                  src="/ggu-logo.png" 
+                  alt="Godavari Global University Logo" 
+                  className="h-8 sm:h-9 w-auto max-w-[130px] object-contain"
+                />
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-academic-600 via-indigo-600 to-academic-400 bg-clip-text text-transparent dark:from-academic-400 dark:to-indigo-300">
+                  <span className="font-bold text-base tracking-tight text-slate-900 dark:text-white">
                     AcademiQ
                   </span>
                   <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-full bg-academic-100 text-academic-700 dark:bg-academic-950 dark:text-academic-300 border border-academic-200 dark:border-academic-800">
-                    AI RAG
+                    GGU AI
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400 -mt-0.5">
-                  Academic Assistance Assistant
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 -mt-0.5 font-medium">
+                  Godavari Global University
                 </p>
               </div>
             </Link>
@@ -77,7 +82,7 @@ export const Navbar: React.FC = () => {
               Dashboard
             </Link>
 
-            {/* Prominent Faculty Upload Button for Faculty */}
+            {/* Faculty Upload Button */}
             {user?.role === 'FACULTY' && (
               <Link
                 to="/faculty/upload"
@@ -89,45 +94,37 @@ export const Navbar: React.FC = () => {
             )}
           </nav>
 
-          {/* Right Action Tools: Role Toggle, AI Model Key, Theme & Profile */}
+          {/* Right Action Tools */}
           <div className="flex items-center gap-2.5">
-            {/* Simple Student / Faculty Role Switcher */}
-            <div className="flex items-center bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-lg p-0.5 text-xs">
-              <button
-                onClick={() => switchRole('STUDENT')}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-md font-medium transition-all ${
-                  user?.role === 'STUDENT'
-                    ? 'bg-white dark:bg-academic-600 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-                }`}
-                title="Switch to Student view"
-              >
-                🎓 Student
-              </button>
-              <button
-                onClick={() => switchRole('FACULTY')}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-md font-medium transition-all ${
-                  user?.role === 'FACULTY'
-                    ? 'bg-white dark:bg-indigo-600 text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-                }`}
-                title="Switch to Faculty view (upload privileges)"
-              >
-                👨‍🏫 Faculty
-              </button>
-            </div>
+            
+            {/* Authenticated Role Status Badge (Read-only, no direct switch) */}
+            {user && (
+              <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-navy-900 border border-slate-200 dark:border-slate-800">
+                {user.role === 'FACULTY' ? (
+                  <span className="text-indigo-700 dark:text-indigo-300 flex items-center gap-1">
+                    <Briefcase className="h-3.5 w-3.5" />
+                    Faculty • {user.studentIdNumber || 'Verified'}
+                  </span>
+                ) : (
+                  <span className="text-academic-700 dark:text-academic-300 flex items-center gap-1">
+                    <GraduationCap className="h-3.5 w-3.5" />
+                    Student • {user.studentIdNumber || 'Verified'}
+                  </span>
+                )}
+              </div>
+            )}
 
-            {/* AI Model Setting Button */}
+            {/* AI Model Configuration Button */}
             <button
               onClick={() => setAiModalOpen(true)}
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-navy-900 hover:border-academic-400 text-xs text-slate-700 dark:text-slate-300 transition-colors"
-              title="Configure AI Model (Gemini / OpenAI)"
+              title="Configure AI Model Settings"
             >
               <Cpu className="h-3.5 w-3.5 text-academic-500" />
-              <span className="hidden sm:inline">AI Model</span>
+              <span className="hidden sm:inline">AI Settings</span>
             </button>
 
-            {/* Theme Switcher Button */}
+            {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               aria-label="Toggle theme"
@@ -136,14 +133,16 @@ export const Navbar: React.FC = () => {
               {theme === 'dark' ? <Sun className="h-5 w-5 text-amber-400" /> : <Moon className="h-5 w-5 text-slate-700" />}
             </button>
 
-            {/* User Profile dropdown */}
+            {/* Authenticated Profile or Login Buttons */}
             {user ? (
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
                   className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors"
                 >
-                  <div className="h-8 w-8 rounded-full bg-academic-600 text-white flex items-center justify-center font-semibold text-xs border-2 border-academic-400">
+                  <div className={`h-8 w-8 rounded-full text-white flex items-center justify-center font-semibold text-xs border-2 ${
+                    user.role === 'FACULTY' ? 'bg-indigo-600 border-indigo-400' : 'bg-academic-600 border-academic-400'
+                  }`}>
                     {user.fullName ? user.fullName.charAt(0) : 'U'}
                   </div>
                   <div className="hidden lg:block text-left">
@@ -151,7 +150,7 @@ export const Navbar: React.FC = () => {
                       {user.fullName}
                     </p>
                     <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                      {user.role}
+                      {user.role} {user.studentIdNumber ? `• ${user.studentIdNumber}` : ''}
                     </p>
                   </div>
                   <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
@@ -162,7 +161,11 @@ export const Navbar: React.FC = () => {
                     <div className="px-3 py-2 border-b border-slate-100 dark:border-slate-800 mb-1">
                       <p className="font-semibold text-slate-900 dark:text-white">{user.fullName}</p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">{user.email}</p>
-                      <span className="inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-academic-100 dark:bg-academic-950 text-academic-700 dark:text-academic-300">
+                      <span className={`inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full ${
+                        user.role === 'FACULTY' 
+                          ? 'bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300'
+                          : 'bg-academic-100 dark:bg-academic-950 text-academic-700 dark:text-academic-300'
+                      }`}>
                         {user.role} • {user.studentIdNumber || 'Verified'}
                       </span>
                     </div>
@@ -215,12 +218,20 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             ) : (
-              <Link
-                to="/login"
-                className="px-4 py-2 rounded-lg bg-academic-600 hover:bg-academic-700 text-white text-xs font-semibold shadow-sm transition-colors"
-              >
-                Sign In
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login?role=student"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 bg-white dark:bg-navy-900 hover:bg-slate-50 transition-colors shadow-sm"
+                >
+                  Student Login
+                </Link>
+                <Link
+                  to="/login?role=faculty"
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow-sm"
+                >
+                  Faculty Login
+                </Link>
+              </div>
             )}
           </div>
         </div>

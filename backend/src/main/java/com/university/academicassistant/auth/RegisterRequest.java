@@ -1,16 +1,11 @@
 package com.university.academicassistant.auth;
 
 import com.university.academicassistant.user.Role;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
-    @NotBlank(message = "Full name is required")
     private String fullName;
-
-    @NotBlank(message = "Email is required")
-    @Email(message = "Invalid email format")
     private String email;
 
     @NotBlank(message = "Password is required")
@@ -19,8 +14,11 @@ public class RegisterRequest {
 
     private Role role = Role.STUDENT;
     private Long departmentId;
+    private String departmentCode;
     private Integer currentSemester;
-    private String studentIdNumber;
+    private Integer academicYear;
+    private String studentIdNumber; // Roll No or Emp ID
+    private String stream; // BTech, MTech, MBA, etc.
 
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
@@ -37,9 +35,18 @@ public class RegisterRequest {
     public Long getDepartmentId() { return departmentId; }
     public void setDepartmentId(Long departmentId) { this.departmentId = departmentId; }
 
+    public String getDepartmentCode() { return departmentCode; }
+    public void setDepartmentCode(String departmentCode) { this.departmentCode = departmentCode; }
+
     public Integer getCurrentSemester() { return currentSemester; }
     public void setCurrentSemester(Integer currentSemester) { this.currentSemester = currentSemester; }
 
+    public Integer getAcademicYear() { return academicYear; }
+    public void setAcademicYear(Integer academicYear) { this.academicYear = academicYear; }
+
     public String getStudentIdNumber() { return studentIdNumber; }
     public void setStudentIdNumber(String studentIdNumber) { this.studentIdNumber = studentIdNumber; }
+
+    public String getStream() { return stream; }
+    public void setStream(String stream) { this.stream = stream; }
 }

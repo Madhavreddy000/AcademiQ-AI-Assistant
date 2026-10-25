@@ -25,19 +25,43 @@ public class AuthService {
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email is already registered: " + request.getEmail());
+        String studentId = request.getStudentIdNumber() != null ? request.getStudentIdNumber().trim() : null;
+        if (studentId != null && !studentId.isEmpty() && userRepository.existsByStudentIdNumber(studentId)) {
+            throw new IllegalArgumentException("An account with this Roll Number / Employee ID is already registered: " + studentId);
+        }
+
+        String email = request.getEmail();
+        if (email == null || email.isBlank()) {
+            if (studentId != null && !studentId.isEmpty()) {
+                String cleanId = studentId.replaceAll("[^a-zA-Z0-9.-]", "").toLowerCase();
+                email = cleanId + "@ggu.edu.in";
+            } else {
+                email = "user" + System.currentTimeMillis() + "@ggu.edu.in";
+            }
+        } else {
+            email = email.trim().toLowerCase();
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email / ID is already registered: " + email);
+        }
+
+        Role role = request.getRole() != null ? request.getRole() : Role.STUDENT;
+        String name = request.getFullName();
+        if (name == null || name.isBlank()) {
+            name = (role == Role.FACULTY ? "Faculty " : "Student ") + (studentId != null ? studentId : "Member");
         }
 
         User user = new User(
-                request.getEmail(),
+                email,
                 passwordEncoder.encode(request.getPassword()),
-                request.getFullName(),
-                request.getRole() != null ? request.getRole() : Role.STUDENT
+                name,
+                role
         );
         user.setDepartmentId(request.getDepartmentId());
         user.setCurrentSemester(request.getCurrentSemester());
-        user.setStudentIdNumber(request.getStudentIdNumber());
+        user.setStudentIdNumber(studentId);
+        user.setStream(request.getStream());
 
         User savedUser = userRepository.save(user);
 
@@ -48,11 +72,24 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+        String identifier = request.getEffectiveIdentifier();
+        if (identifier.isBlank()) {
+            throw new IllegalArgumentException("Roll Number, Employee ID, or Email is required");
+        }
+
+        User user = userRepository.findByEmail(identifier)
+                .or(() -> userRepository.findByStudentIdNumber(identifier))
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Roll Number / Employee ID / Email or password"));
+
+        // If a role was specified in the login form, enforce role boundaries
+        if (request.getRole() != null && !request.getRole().isBlank()) {
+            if (!request.getRole().equalsIgnoreCase(user.getRole().name()) && user.getRole() != Role.ADMIN) {
+                throw new IllegalArgumentException("This account is registered as " + user.getRole().name() + ". Please use the " + user.getRole().name().toLowerCase() + " login portal.");
+            }
+        }
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Invalid email or password");
+            throw new IllegalArgumentException("Invalid Roll Number / Employee ID / Email or password");
         }
 
         if (!user.isActive()) {

@@ -33,6 +33,9 @@ public class User {
     @Column(name = "student_id_number", length = 50)
     private String studentIdNumber;
 
+    @Column(name = "stream", length = 50)
+    private String stream;
+
     @Column(name = "avatar_url", length = 255)
     private String avatarUrl;
 
@@ -83,6 +86,9 @@ public class User {
 
     public String getStudentIdNumber() { return studentIdNumber; }
     public void setStudentIdNumber(String studentIdNumber) { this.studentIdNumber = studentIdNumber; }
+
+    public String getStream() { return stream; }
+    public void setStream(String stream) { this.stream = stream; }
 
     public String getAvatarUrl() { return avatarUrl; }
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
